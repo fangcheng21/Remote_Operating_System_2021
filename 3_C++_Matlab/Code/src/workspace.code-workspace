@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../../../test4/linux-5.4.31/arch"
+		},
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"cstring": "cpp",
+			"*.txx": "cpp"
+		}
+	}
+}

@@ -1,0 +1,38 @@
+t_server=tcpip('127.0.0.1',6668,'NetworkRole','server');%与第一个请求连接的客户机建立连接，端口号为6668，类型为服务器。
+t_server.InputBuffersize=10000;%缓冲区放大到10000
+fopen(t_server);%打开服务器，直到建立一个TCP连接才返回；
+sprintf("成功建立连接");
+pause(1);
+
+while(1)
+    
+    while(1)%等到缓存区有数据就跳出循环
+     if  t_server.BytesAvailable>0
+         %t_server.BytesAvailable%显示缓存区字节数
+        break;
+     end
+    end
+data_recv=(fread(t_server,t_server.BytesAvailable));%从缓冲区读取数字数据
+
+
+%%%
+data_send=[40.123456,21.123456,22.123456,23.123456,24.123456,25.123456];
+send1=num2hex(data_send);%转成16进制
+
+send2=[];
+for j = 1:length(data_send)
+    send2 = [send2,send1(j,:)]; %小端模式
+end
+
+count1 = 0;
+send3 = []; %转化成double
+while count1 < length(data_send)*8
+    send3 = [send3,hex2dec(send2((count1*2+1):(count1*2+2)))];
+    count1 = count1 + 1;
+end
+
+fwrite(t_server,send3,'char');
+
+end
+
+fclose(t_server);
